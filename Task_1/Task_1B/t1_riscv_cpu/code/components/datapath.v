@@ -28,7 +28,7 @@ adder          auipcadd(PC, ImmExt, AUIPCResult);
 adder          jalradd(SrcA, ImmExt, JALRTarget);
     
 assign UTypeResult = (Instr[6:0] == 7'b0110111) ? ImmExt : AUIPCResult;   
-mux2 #(32)     pcmux(PCPlus4, PCTarget, PCSrc, PCNext);
+mux4 #(32)     pcmux(PCPlus4, PCTarget, JALRTarget, PCPlus4, {JALR, PCSrc}, PCNext);
 
 // register file logic
 reg_file       rf (clk, RegWrite, Instr[19:15], Instr[24:20], Instr[11:7], Result, SrcA, WriteData);
