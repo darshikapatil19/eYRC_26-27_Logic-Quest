@@ -8,7 +8,7 @@ module controller (
     input        Zero,
     output       [1:0] ResultSrc,
     output       MemWrite,
-    output       PCSrc, ALUSrc,
+    output       PCSrc, JALR, ALUSrc,
     output       RegWrite, Jump,
     output [2:0] ImmSrc,
     output [2:0] ALUControl
@@ -24,6 +24,7 @@ alu_decoder     ad (op[5], funct3, funct7b5, ALUOp, ALUControl);
 
 // for jump and branch
 assign PCSrc = (Branch & Zero) | Jump;
+assign JALR  = (op == 7'b1100111);
 
 endmodule
 
