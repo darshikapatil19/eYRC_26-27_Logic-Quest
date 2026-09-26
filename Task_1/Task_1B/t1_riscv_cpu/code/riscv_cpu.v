@@ -20,7 +20,7 @@ controller  c   (Instr[6:0], Instr[14:12], Instr[30], Zero,
                 ResultSrc, MemWrite, PCSrc, JALR, ALUSrc, RegWrite, Jump,
                 ImmSrc, ALUControl);
 
-    datapath    dp  (clk, reset, ResultSrc, PCSrc, JALR
+    datapath    dp  (clk, reset, ResultSrc, PCSrc, JALR ,
                 ALUSrc, RegWrite, ImmSrc, ALUControl,
                 Zero, PC, Instr, Mem_WrAddr, Mem_WrData, ReadData, Result);
 
