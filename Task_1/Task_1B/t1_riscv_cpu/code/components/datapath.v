@@ -3,7 +3,7 @@
 module datapath (
     input         clk, reset,
     input [1:0]   ResultSrc,
-    input         PCSrc, ALUSrc,
+    input         PCSrc, JALR, ALUSrc,
     input         RegWrite,
     input [2:0]   ImmSrc,
     input [2:0]   ALUControl,
