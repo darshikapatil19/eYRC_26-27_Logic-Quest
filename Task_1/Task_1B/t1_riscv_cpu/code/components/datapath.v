@@ -18,16 +18,16 @@ module datapath (
 wire [31:0] PCNext, PCPlus4, PCTarget;
 wire [31:0] ImmExt, SrcA, SrcB, WriteData, ALUResult;
 wire [31:0] AUIPCResult, UTypeResult;
-wire [31:0] JALRTarget;
+wire [31:0] JALRSum, JALRTarget;
     
 // next PC logic
 reset_ff #(32) pcreg(clk, reset, PCNext, PC);
 adder          pcadd4(PC, 32'd4, PCPlus4);
 adder          pcaddbranch(PC, ImmExt, PCTarget);
 adder          auipcadd(PC, ImmExt, AUIPCResult);
-adder          jalradd(SrcA, ImmExt, JALRTarget);
+adder          jalradd(SrcA, ImmExt, JALRSum);
+assign JALRTarget = JALRSum & ~32'h1;
     
-assign UTypeResult = (Instr[6:0] == 7'b0110111) ? ImmExt : AUIPCResult;   
 mux4 #(32)     pcmux(PCPlus4, PCTarget, JALRTarget, PCPlus4, {JALR, PCSrc}, PCNext);
 
 // register file logic
@@ -37,6 +37,8 @@ imm_extend     ext (Instr[31:7], ImmSrc, ImmExt);
 // ALU logic
 mux2 #(32)     srcbmux(WriteData, ImmExt, ALUSrc, SrcB);
 alu            alu (SrcA, SrcB, ALUControl, ALUResult, Zero);
+
+assign UTypeResult = (Instr[6:0] == 7'b0110111) ? ImmExt : AUIPCResult;
 mux4 #(32) resultmux(ALUResult, ReadData, PCPlus4, UTypeResult, ResultSrc, Result);
 
 assign Mem_WrData = WriteData;
